@@ -1,14 +1,6 @@
 /* globals.css */
 @import "tailwindcss";
 
-/* Base theme variables */
-:root {
-  --font-size: 16px;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --radius: 0rem;
-}
-
 /* Light theme (default) */
 @theme {
   --color-background: #f2f1ec;
@@ -53,13 +45,22 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Dark theme - use class-based for toggle support */
+:root {
+  --font-size: 16px;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --radius: 5rem;
+  --color-border: #bdbdb6;
+  --color-primary-foreground: #969696;
+  --color-muted: #e4e3dc;
+}
+
 .dark {
   /* Backgrounds */
   --color-background: #11110f;
   --color-foreground: #f2f1ec;
 
-  --color-card: #1a1a17;
+  --color-card: #1d1d1c;
   --color-card-foreground: #f2f1ec;
 
   --color-popover: #1a1a17;
@@ -73,7 +74,7 @@
   --color-secondary: #252520;
   --color-secondary-foreground: #f2f1ec;
 
-  --color-muted: #1f1f1b;
+  --color-muted: #2b2b2a;
   --color-muted-foreground: #a9a79e;
 
   /* Keep the brand color */
@@ -84,7 +85,7 @@
   --color-destructive-foreground: #ffffff;
 
   /* Borders */
-  --color-border: #4a4942;
+  --color-border: #242424;
 
   /* Inputs */
   --color-input: transparent;
