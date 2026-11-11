@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import LoginModal from "@/components/LoginModal";
 
 interface Application {
   id: string;
@@ -32,12 +34,17 @@ const Applications = () => {
         const data = await res.json();
         setApplications(data.applications);
       } catch (error) {
-        console.error("error");
+        console.error("Error Fetching your applications: ", error);
       } finally {
         setLoading(false);
       }
     })();
   }, [user?.id]);
+
+  //  Not signed in
+  if (!user) {
+    return <LoginModal callbackUrl={`/applications`} />;
+  }
 
   if (sessionStatus === "loading" || loading) {
     return (
@@ -48,6 +55,7 @@ const Applications = () => {
   }
   return (
     <div>
+      <Navbar />
       <div className="min-h-[calc(100vh-64px)] w-full max-w-5xl mx-auto ">
         <h2 className="mb-5">Jobs I Applied</h2>
 

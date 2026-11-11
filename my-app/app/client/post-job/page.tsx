@@ -63,8 +63,8 @@ const emptyForm: FormData = {
 export default function PostJob() {
   const { data: session, status } = useSession();
   const user = session?.user;
-
   const router = useRouter();
+
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -99,13 +99,13 @@ export default function PostJob() {
     }
 
     if (!user) {
-      router.push("/login?callbackUrl=/jobs/post-job");
+      router.push("/login?callbackUrl=/client/post-job");
       return;
     }
 
     if (user?.role !== "RECRUITER") {
       alert("You are not allowed to post a job");
-      router.push("/client/register?callbackUrl=/jobs/post-job");
+      router.push("/client/register?callbackUrl=/client/post-job");
       router.refresh();
     }
   }, [user, router, status]);

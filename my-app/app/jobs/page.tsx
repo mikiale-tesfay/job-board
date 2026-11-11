@@ -14,9 +14,9 @@ import {
   Users,
   Star,
   ArrowUpRight,
-  Filter,
   BookmarkPlus,
   Bookmark,
+  ListFilter,
 } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Image from "next/image";
@@ -61,7 +61,6 @@ export interface Job {
 
 const TYPES: JobType[] = ["Full-time", "Part-time", "Contract", "Internship"];
 const LOCATIONS: WorkplaceType[] = ["Remote", "Hybrid", "On-site"];
-const LEVELS = ["Junior", "Mid-level", "Senior", "Staff", "Principal", "Head / Director"];
 
 function formatSalary(min?: number | null, max?: number | null): string {
   if (min && max) return `$${min.toLocaleString()} - $${max.toLocaleString()}`;
@@ -135,7 +134,7 @@ export default function JobsPage() {
       <Navbar />
 
       {/* Search Header */}
-      <section className="p-5 mx-auto mt-5 border rounded shadow max-w-7xl border-border">
+      <section className="p-5 mx-auto mt-5 border rounded shadow max-w-7xl border-border bg-white">
         <div className="flex flex-col gap-2 md:flex-row">
           <div className="flex items-center flex-1 gap-3 px-4 py-3 border rounded-full bg-card border-border">
             <Search className="text-muted-foreground shrink-0" size={18} />
@@ -153,7 +152,7 @@ export default function JobsPage() {
             )}
           </div>
 
-          <div className="flex items-center flex-1 gap-3 px-4 py-3 rounded-full bg-card border-border">
+          <div className="flex items-center border flex-1 gap-3 px-4 py-3 rounded-full bg-card border-border">
             <MapPin className="text-muted-foreground shrink-0" size={18} />
             <input
               type="text"
@@ -165,7 +164,7 @@ export default function JobsPage() {
           </div>
 
           <button
-            className="px-8 py-3 text-sm font-bold tracking-wide transition-colors bg-accent text-accent-foreground hover:bg-accent/90"
+            className="px-8 rounded py-3 text-sm font-bold tracking-wide transition-colors bg-accent text-accent-foreground cursor-pointer hover:bg-accent/90"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
               letterSpacing: "0.08em",
@@ -173,94 +172,29 @@ export default function JobsPage() {
           >
             SEARCH JOBS
           </button>
-        </div>
 
-        <div className="flex flex-wrap items-center max-w-3xl gap-6 mx-auto mt-5 text-sm md:text-base" style={{ fontFamily: "'DM Mono', monospace" }}>
-          <span className="font-bold text-muted-foreground">SAVED SEARCHES:</span>
-          {["Staff Engineer", "Design Systems", "AI / ML", "Remote"].map((tag) => (
-            <button key={tag} onClick={() => setSearch(tag)} className="transition-colors hover:text-accent">
-              {tag}
-            </button>
-          ))}
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="px-8 py-3 cursor-pointer rounded text-sm font-bold tracking-wide transition-colors flex items-center gap-1 bg-black text-white"
+            style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              letterSpacing: "0.08em",
+            }}
+          >
+            <ListFilter size={20} />
+            Filter
+          </button>
         </div>
       </section>
 
       {/* Main Container */}
       <div className="px-2 mx-auto mt-6 max-w-7xl">
-        <div className="flex gap-8">
-          {/* Sidebar */}
-          <aside className="hidden sticky top-20 w-56 max-h-[calc(100vh-80px)] h-full lg:block shrink-0">
-            <div className="space-y-6">
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-xs font-bold tracking-widest" style={{ fontFamily: "'DM Mono', monospace" }}>
-                  FILTERS
-                </span>
-                {activeFilterCount > 0 && (
-                  <button
-                    onClick={() => {
-                      setActiveTypes([]);
-                      setActiveWorkplaces([]);
-                    }}
-                    className="px-2 text-xs border rounded py-0.5 border-accent text-accent hover:underline"
-                    style={{ fontFamily: "'DM Mono', monospace" }}
-                  >
-                    CLEAR ({activeFilterCount})
-                  </button>
-                )}
-              </div>
-
-              <FilterGroup title="JOB TYPE" options={TYPES} active={activeTypes} toggle={(v) => toggleFilter(activeTypes, v, setActiveTypes)} />
-              <FilterGroup
-                title="WORKPLACE"
-                options={LOCATIONS}
-                active={activeWorkplaces}
-                toggle={(v) => toggleFilter(activeWorkplaces, v, setActiveWorkplaces)}
-              />
-              <FilterGroup title="LEVEL" options={LEVELS} active={[]} toggle={() => {}} />
-            </div>
-          </aside>
-
+        <div className="lg:flex gap-8">
           {/* Main Feed */}
           <main className="flex-1 min-w-0">
-            <div className="sticky top-0 z-10 pt-2 pb-4 bg-background">
-              <div className="flex items-center justify-between pb-2 border-b border-border bg-background">
-                <div className="text-xs sm:text-sm text-muted-foreground" style={{ fontFamily: "'DM Mono', monospace" }}>
-                  <span className="font-medium text-foreground">{filtered.length}</span> RESULTS
-                  {(search || locationSearch) && (
-                    <span className="ml-1">
-                      {search && ` · "${search}"`}
-                      {locationSearch && ` · ${locationSearch}`}
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className={`lg:hidden flex items-center gap-2 text-xs border border-border px-3 rounded py-1.5 hover:bg-muted transition-colors ${
-                      activeFilterCount > 0 && "text-accent border-accent"
-                    }`}
-                    style={{ fontFamily: "'DM Mono', monospace" }}
-                  >
-                    <Filter size={14} />
-                    FILTER {activeFilterCount > 0 && `(${activeFilterCount})`}
-                  </button>
-
-                  <select
-                    className="text-xs rounded border border-border bg-background px-3 py-1.5 outline-none"
-                    style={{ fontFamily: "'DM Mono', monospace" }}
-                  >
-                    <option>MOST RECENT</option>
-                    <option>HIGHEST SALARY</option>
-                    <option>MOST RELEVANT</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
             {/* Mobile Filters Dropdown */}
             {showFilters && (
-              <div className="p-4 mb-5 border rounded lg:hidden border-border bg-card">
+              <div className="p-4 mb-5 border rounded border-border bg-card">
                 <div className="grid grid-cols-2 gap-6">
                   <FilterGroup title="JOB TYPE" options={TYPES} active={activeTypes} toggle={(v) => toggleFilter(activeTypes, v, setActiveTypes)} />
                   <FilterGroup
@@ -300,7 +234,7 @@ export default function JobsPage() {
                     job={job}
                     isSelected={selectedJob?.id === job.id}
                     isSaved={savedJobIds.includes(job.id)}
-                    onClick={() => setSelectedJob(selectedJob?.id === job.id ? null : job)}
+                    onClick={() => setSelectedJob(job)}
                     onSave={(e) => toggleSave(job.id, e)}
                   />
                 ))}
@@ -313,18 +247,20 @@ export default function JobsPage() {
               </div>
             )}
           </main>
+
+          {/* Drawer Panel Detail */}
+          <aside>
+            {selectedJob && (
+              <JobDetailPanel
+                job={selectedJob}
+                isSaved={savedJobIds.includes(selectedJob.id)}
+                onSave={(e) => toggleSave(selectedJob.id, e)}
+                onClose={() => setSelectedJob(null)}
+              />
+            )}
+          </aside>
         </div>
       </div>
-
-      {/* Drawer Panel Detail */}
-      {selectedJob && (
-        <JobDetailPanel
-          job={selectedJob}
-          isSaved={savedJobIds.includes(selectedJob.id)}
-          onSave={(e) => toggleSave(selectedJob.id, e)}
-          onClose={() => setSelectedJob(null)}
-        />
-      )}
     </div>
   );
 }
@@ -384,8 +320,8 @@ function JobRow({
   return (
     <div
       onClick={onClick}
-      className={`p-5 border border-transparent rounded cursor-pointer shadow-sm bg-card transition-all active:border-foreground hover:border-foreground ${
-        isSelected ? "bg-muted/50 border-l-4 border-l-accent" : "border-border"
+      className={`p-5 border rounded cursor-pointer shadow-sm bg-card transition-all active:border-foreground hover:border-foreground ${
+        isSelected ? "border-l-4 border border-l-black border-black" : "border-transparent"
       }`}
     >
       <div className="flex items-start justify-between gap-4">
@@ -490,8 +426,7 @@ function JobDetailPanel({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="fixed top-0 right-0 z-50 w-full h-screen max-w-xl overflow-y-auto border-l shadow-2xl bg-card border-border">
+      <div className="w-full sticky top-18 h-[80vh] max-w-xl overflow-y-auto border-l shadow-2xl bg-card border-border">
         <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b bg-card border-border">
           <div className="flex items-center gap-3">
             <div
@@ -652,18 +587,6 @@ function JobDetailPanel({
               </div>
             </div>
           )}
-          <div className="mt-8">
-            <Link
-              href={`/jobs/${job.id}/apply`}
-              className="flex items-center justify-center w-full gap-2 py-4 text-sm font-bold tracking-widest transition-colors rounded bg-accent text-accent-foreground hover:bg-accent/90"
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                letterSpacing: "0.1em",
-              }}
-            >
-              APPLY TO {job.company?.name?.toUpperCase()} <ArrowUpRight size={15} />
-            </Link>
-          </div>
         </div>
       </div>
     </>

@@ -30,19 +30,13 @@ const Navbar = () => {
           Jobs
         </Link>
 
-        <Link href={"/resume"} className={classes}>
-          Resume
+        <Link href={"/applications"} className={classes}>
+          Applications
         </Link>
 
-        <Link href={"/resume"} className={classes}>
+        <Link href={"/profile"} className={classes}>
           Profile
         </Link>
-
-        {user && (
-          <Link href={"/dashboard"} className={classes}>
-            Dashboard
-          </Link>
-        )}
       </div>
 
       {/* Right */}

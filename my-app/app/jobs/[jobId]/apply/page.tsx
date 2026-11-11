@@ -4,8 +4,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ArrowLeft, FileText, CheckCircle, Loader2, Send, Shield, Check, User, AlertCircle, Target, ChevronsUpDown } from "lucide-react";
+import { FileText, CheckCircle, Loader2, Send, Shield, Check, User, AlertCircle, Target, ChevronsUpDown } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import LoginModal from "@/components/LoginModal";
 
 //  Types (mirror Prisma enums / model shapes)
 
@@ -35,15 +36,6 @@ interface JobDTO {
 }
 
 //  Helpers
-
-const JOB_TYPE_LABEL: Record<JobType, string> = {
-  FULL_TIME: "Full-time",
-  PART_TIME: "Part-time",
-  CONTRACT: "Contract",
-  INTERNSHIP: "Internship",
-  REMOTE: "Remote",
-};
-
 const WORKPLACE_LABEL: Record<WorkplaceType, string> = {
   REMOTE: "Remote",
   HYBRID: "Hybrid",
@@ -193,30 +185,7 @@ export default function ApplyPage() {
 
   //  Not signed in
   if (!user) {
-    return (
-      <div className="min-h-screen bg-background text-foreground">
-        <Navbar />
-        <div className="max-w-2xl px-4 py-20 mx-auto">
-          <div className="p-12 text-center border bg-card border-border">
-            <User className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h1 className="mb-2 text-2xl font-bold" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
-              SIGN IN REQUIRED
-            </h1>
-            <p className="mb-6 text-muted-foreground">You need to be signed in to apply for this position.</p>
-            <button
-              onClick={() => router.push(`/sign-in?redirect=/jobs/${jobId}/apply`)}
-              className="px-8 py-3 text-sm font-bold tracking-widest transition-colors bg-accent text-accent-foreground hover:bg-accent/90"
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                letterSpacing: "0.1em",
-              }}
-            >
-              SIGN IN
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoginModal callbackUrl={`/jobs/${job.id}/apply`} />;
   }
 
   //  Success
