@@ -111,7 +111,7 @@ export async function POST(req: Request) {
         tags: data.tags,
         responsibilities: data.responsibilities,
         requirements: data.requirements,
-        postedById: session.user.id,
+        postedBy: session.user.id,
         companyId: company.id,
         // isActive, isFeatured, postedOn, createdAt, updatedAt -> server defaults
       },
