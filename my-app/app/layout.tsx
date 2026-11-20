@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   description: "Job Rabit is the leading job board for connecting talents with opportunities.",
   // Set base URL for subsequent relative paths (like OG images)
   metadataBase: new URL("https://jobrabit.vercel.app"),
+
+  verification: {
+    google: '<meta name="google-site-verification" content="Y1NgErAX34e54WeZGzy9SjzAvWCzrTTfSxyqpENQvig" />',
+  },
 };
 
 export default function RootLayout({
