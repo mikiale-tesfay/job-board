@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://jobrabit.vercel.app"),
 
   verification: {
-    google: '<meta name="google-site-verification" content="Y1NgErAX34e54WeZGzy9SjzAvWCzrTTfSxyqpENQvig" />',
+    google: "Y1NgErAX34e54WeZGzy9SjzAvWCzrTTfSxyqpENQvig",
   },
 };
 
