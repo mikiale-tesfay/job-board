@@ -17,11 +17,11 @@ model User {
   image         String?
   createdAt     DateTime      @default(now())
   updatedAt DateTime @updatedAt
-  Account       Account[]
-  Application   Application[]
-  Company       Company?
-  Job           Job[]
-  SavedJob      SavedJob[]
+  accounts       Account[]
+  applications   Application[]
+  company       Company?
+  job           Job[]
+  savedJob      SavedJob[]
   Session       Session[]
 
   @@index([role])
@@ -46,10 +46,10 @@ model Job {
   salaryMax        Int?
   salaryMin        Int?
   workplace        WorkplaceType
-  Application      Application[]
-  Company          Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  User             User          @relation(fields: [postedById], references: [id], onDelete: Cascade)
-  SavedJob         SavedJob[]
+  applications      Application[]
+  company          Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user             User          @relation(fields: [postedById], references: [id], onDelete: Cascade)
+  savedJob         SavedJob[]
 
   @@index([companyId])
   @@index([isActive, postedOn])
@@ -69,7 +69,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -83,8 +83,8 @@ model Application {
   coverLetter String?
   createdAt   DateTime          @default(now())
   updatedAt DateTime @updatedAt
-  Job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  User        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([jobId, userId])
   @@index([jobId, status])
@@ -105,8 +105,8 @@ model Company {
   updatedAt DateTime @updatedAt
   address     String?
   logoColor   String?  @default("#000000")
-  User        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  Job         Job[]
+  user        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  job         Job[]
 
   @@index([ownerId])
 }
@@ -116,8 +116,8 @@ model SavedJob {
   jobId     String
   userId    String
   createdAt DateTime @default(now())
-  Job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([jobId, userId])
   @@index([userId])
@@ -130,7 +130,7 @@ model Session {
   expires      DateTime
   createdAt    DateTime @default(now())
  updatedAt DateTime @updatedAt
-  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
