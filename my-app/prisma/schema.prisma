@@ -36,7 +36,7 @@ model Job {
   location         String
   isActive         Boolean       @default(true)
   postedOn         DateTime      @default(now())
-  postedBy       String
+  postedById       String
   companyId        String
   createdAt        DateTime      @default(now())
   updatedAt DateTime @updatedAt
@@ -48,12 +48,12 @@ model Job {
   workplace        WorkplaceType
   applications      Application[]
   company          Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  user             User          @relation(fields: [postedBy], references: [id], onDelete: Cascade)
+  postedBy             User          @relation(fields: [postedById], references: [id], onDelete: Cascade)
   savedJob         SavedJob[]
 
   @@index([companyId])
   @@index([isActive, postedOn])
-  @@index([postedBy])
+  @@index([postedById])
 }
 
 model Account {
