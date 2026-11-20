@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         password,
       },
     });
-    return NextResponse.json({ user: newuser, status: 201 });
+    return NextResponse.json({ user: newuser }, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Failed to create a user." }, { status: 500 });
