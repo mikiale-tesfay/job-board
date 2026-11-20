@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
   const applications = await prisma.application.findMany({
     where: { userId: session.user.id },
     include: {
-      job: {
+      Job: {
         select: {
           id: true,
           title: true,

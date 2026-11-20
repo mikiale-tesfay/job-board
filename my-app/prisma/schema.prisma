@@ -28,7 +28,7 @@ model User {
 }
 
 model Job {
-  id               String        @id
+  id               String        @id @default(cuid())
   title            String
   description      String
   tags             String[]      @default([])
@@ -57,7 +57,7 @@ model Job {
 }
 
 model Account {
-  id                String  @id
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -76,13 +76,13 @@ model Account {
 }
 
 model Application {
-  id          String            @id
+  id          String            @id @default(cuid())
   jobId       String
   userId      String
   status      ApplicationStatus @default(PENDING)
   coverLetter String?
   createdAt   DateTime          @default(now())
-  updatedAt   DateTime
+  updatedAt DateTime @updatedAt
   Job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
   User        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -92,7 +92,7 @@ model Application {
 }
 
 model Company {
-  id          String   @id
+  id          String   @id @default(cuid())
   ownerId     String   @unique
   name        String   @unique
   description String
@@ -102,7 +102,7 @@ model Company {
   founded     String?
   website     String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt DateTime @updatedAt
   address     String?
   logoColor   String?  @default("#000000")
   User        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -112,7 +112,7 @@ model Company {
 }
 
 model SavedJob {
-  id        String   @id
+  id        String   @id @default(cuid())
   jobId     String
   userId    String
   createdAt DateTime @default(now())
@@ -124,7 +124,7 @@ model SavedJob {
 }
 
 model Session {
-  id           String   @id
+  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
